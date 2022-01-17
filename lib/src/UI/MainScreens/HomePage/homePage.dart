@@ -81,10 +81,10 @@ class _HomePageState extends State<HomePage> {
             controller: _scrollController,
             child: Column(
               children: <Widget>[
-                // Container(
-                //     color: Theme.of(context).primaryColor,
-                //     height: 240,
-                //     child: SliderWidget()),
+                Container(
+                    color: Theme.of(context).primaryColor,
+                    height: 240,
+                    child: SliderWidget()),
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: Container(
