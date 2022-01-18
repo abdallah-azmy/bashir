@@ -46,13 +46,7 @@ class _UnPinNewsScreenState extends State<UnPinNewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: InkWell(
-            onTap: () {
-              setState(() {
-                _enabled = !_enabled;
-              });
-            },
-            child: Text('جميع الاخبار')),
+        title: Text('جميع الاخبار'),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         leading: InkWell(

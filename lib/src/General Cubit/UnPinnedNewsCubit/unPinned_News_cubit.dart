@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:bashir/src/models/unPinNewsModel.dart';
@@ -18,34 +17,22 @@ class UnPinnedNewsCubit extends Cubit<UnPinnedNewsState> {
 
   NewNetworkUtil _utils = NewNetworkUtil();
 
-  UnPinNewsModel model ;
-  getUnPinnedNews({String status,int page}) async {
+  UnPinNewsModel model;
+  getUnPinnedNews({String status, int page}) async {
     if (page == 1) {
       emit(UnPinnedNewsLoadingState());
     } else {
       emit(UnPinnedNewsMoreLoadingState());
     }
     // _utils.get('un_pinned_news', body: {
-    _utils.get('un_pinned_newsPaginate', body: {
-    'page': page
-    }
-    ).then((value) {
+    _utils.get('un_pinned_newsPaginate', body: {'page': page}).then((value) {
       if (value.statusCode == 200) {
         print('un_pinned_news=====Success');
         print('0000000000000000=====${value.data}');
 
-
-
-
         model = UnPinNewsModel.fromJson(value.data);
 
-
-
-
-
-
         emit(UnPinnedNewsSuccessState(model: model));
-
       } else {
         print('un_pinned_news=====Failed');
         model = UnPinNewsModel.fromJson(value.data);
@@ -53,8 +40,7 @@ class UnPinnedNewsCubit extends Cubit<UnPinnedNewsState> {
       }
     }).catchError((error) {
       print("catchError : $error");
-      emit(UnPinnedNewsErrorState(error:"حدث خطأ ما ... يرجي اعادة المحاولة"));
+      emit(UnPinnedNewsErrorState(error: "حدث خطأ ما ... يرجي اعادة المحاولة"));
     });
   }
-
 }
