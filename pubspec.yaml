@@ -43,6 +43,7 @@ dependencies:
   video_player:
   chewie: 1.0.0
   flutter_swiper:
+  flutter_local_notifications: ^5.0.0+4
   card_swiper: ^1.0.4
   shimmer: ^2.0.0
   bubble_tab_indicator: "^0.1.4"

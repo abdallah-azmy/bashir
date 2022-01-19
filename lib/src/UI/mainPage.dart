@@ -96,8 +96,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        // backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: Colors.white,
         bottomNavigationBar: TitledBottomNavigationBar(
+          inactiveStripColor: Colors.white,
             indicatorColor: Theme.of(context).primaryColor,
             inactiveColor: Colors.black,
             activeColor: Theme.of(context).primaryColor,
