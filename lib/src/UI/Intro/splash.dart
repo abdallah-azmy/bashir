@@ -60,6 +60,8 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // FirebaseNotifications().setUpFirebase();
+    print("api token : ${CacheHelper.getData(key: "token")}");
+
     _loadData();
     _checkInternetConnection();
     // _getShared();

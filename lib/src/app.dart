@@ -7,6 +7,7 @@ import 'package:bashir/src/General%20Cubit/CommentsCubit/comments_cubit.dart';
 import 'package:bashir/src/General%20Cubit/ContactUsCubit/contactUs_cubit.dart';
 import 'package:bashir/src/General%20Cubit/EditProfileCubit/editProfile_cubit.dart';
 import 'package:bashir/src/General%20Cubit/FavouriteNewsCubit/fav_News_cubit.dart';
+import 'package:bashir/src/General%20Cubit/LogOutCubit/logOut_cubit.dart';
 import 'package:bashir/src/General%20Cubit/MomentByMomentGalleryCubit/moment_by_moment_cubit.dart';
 import 'package:bashir/src/General%20Cubit/NotificationsCubit/notifications_cubit.dart';
 import 'package:bashir/src/General%20Cubit/PhotoGalleryCubit/photo_gallery_cubit.dart';
@@ -52,6 +53,7 @@ class _AppState extends State<App> {
         BlocProvider(create: (_)=>ForgetPasswordCubit()),
         BlocProvider(create: (_)=>ConfirmCodeCubit()),
         BlocProvider(create: (_)=>ForgetPasswordCubit()),
+        BlocProvider(create: (_)=>LogOutCubit()),
 
 
 

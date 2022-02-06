@@ -1,14 +1,17 @@
 import 'package:bashir/src/General%20Cubit/AdminPhoneCubit/admin_phone_cubit.dart';
+import 'package:bashir/src/General%20Cubit/LogOutCubit/logOut_cubit.dart';
 import 'package:bashir/src/Helpers/route.dart';
 import 'package:bashir/src/UI/Basics/Register/Login/login.dart';
 import 'package:bashir/src/UI/MainScreens/profile/fav.dart';
 import 'package:bashir/src/UI/MainWidgets/customBtn.dart';
 import 'package:bashir/src/UI/MainWidgets/customDrawer.dart';
+import 'package:bashir/src/UI/MainWidgets/customLinearLoading.dart';
 import 'package:bashir/src/UI/mainPage.dart';
 import 'package:bashir/src/network/cachHelper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../about.dart';
@@ -25,11 +28,11 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   _launchURLPhone() async {
     var url = 'https://wa.me/${AdminPhoneCubit.get(context).model.data.value}';
     await launch(url);
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -55,15 +58,15 @@ class _ProfileState extends State<Profile> {
             child: Icon(widget.icon == null ? null : Icons.arrow_back_ios)),
       ),
       body:
-      // _prefs == null
-      //     ? Center(
-      //         child: SpinKitThreeBounce(
-      //           size: 25,
-      //           color: Theme.of(context).primaryColor,
-      //         ),
-      //       )
-      //     :
-      CacheHelper.getData(key: 'token') == null //
+          // _prefs == null
+          //     ? Center(
+          //         child: SpinKitThreeBounce(
+          //           size: 25,
+          //           color: Theme.of(context).primaryColor,
+          //         ),
+          //       )
+          //     :
+          CacheHelper.getData(key: 'token') == null //
               ? Center(
                   child: CustomBtn(
                       text: 'تسجيل الدخول',
@@ -76,7 +79,9 @@ class _ProfileState extends State<Profile> {
               : Container(
                   height: MediaQuery.of(context).size.height,
                   child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10,),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
                     children: <Widget>[
                       SizedBox(height: 20),
                       Padding(
@@ -87,7 +92,7 @@ class _ProfileState extends State<Profile> {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                Text( CacheHelper.getUserData().data[0].name,
+                                Text(CacheHelper.getUserData().data[0].name,
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 18)),
                                 SizedBox(width: 20),
@@ -97,9 +102,14 @@ class _ProfileState extends State<Profile> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: CachedNetworkImage(
-                                      imageUrl: CacheHelper.getUserData().data[0].image == null
+                                      imageUrl: CacheHelper.getUserData()
+                                                  .data[0]
+                                                  .image ==
+                                              null
                                           ? ""
-                                          : CacheHelper.getUserData().data[0].image,
+                                          : CacheHelper.getUserData()
+                                              .data[0]
+                                              .image,
                                       errorWidget: (context, url, error) =>
                                           ClipRRect(
                                               borderRadius:
@@ -151,8 +161,8 @@ class _ProfileState extends State<Profile> {
                       }),
                       _optionCard("مركز المساعدة", FontAwesomeIcons.whatsapp,
                           onTap: () {
-                            print("call user");
-                            _launchURLPhone();
+                        print("call user");
+                        _launchURLPhone();
                       }),
                       _optionCard("كلمة السر", Icons.edit, onTap: () {
                         Navigator.push(
@@ -160,21 +170,16 @@ class _ProfileState extends State<Profile> {
                             MaterialPageRoute(
                                 builder: (context) => EditPassword()));
                       }),
-                      _optionCard("تسجيل الخروج", Icons.exit_to_app, onTap: () {
-                        CacheHelper.removeData(key: "token");
-                        CacheHelper.removeData(key: "userData");
-                        // _prefs.remove("name");
-                        // _prefs.remove("email");
-                        // _prefs.remove("id");
-                        // _prefs.remove("active");
-                        // _prefs.remove("token");
-                        // _prefs.remove("image");
-                        push(context,  MainPage());
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => MainPage()));
-                      }),
+                      BlocBuilder<LogOutCubit, LogOutState>(
+                        builder: (context, state) {
+                          return (state is LogOutLoadingState)
+                              ? CustomLinearLoading()
+                              : _optionCard("تسجيل الخروج", Icons.exit_to_app,
+                                  onTap: () {
+                                  LogOutCubit.get(context).logOut();
+                                });
+                        },
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
