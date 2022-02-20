@@ -70,7 +70,7 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                   height: 250,
                 ),
                 Text(
-                  'اهلًا بكم في تطبيق قرية بشير تفضل بتسجيل الدخول',
+                  'تم ارسال كود التحقق الى البريد الالكترونى الخاص بكم',
                   style: TextStyle(fontSize: 15),
                   textAlign: TextAlign.center,
                 ),
@@ -87,9 +87,6 @@ class _ConfirmCodeState extends State<ConfirmCode> {
                             onChanged: (_) {},
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             appContext: context,
-                            // activeColor: Theme.of(context).primaryColor,
-                            // inactiveColor: Colors.grey,
-                            // textInputType: TextInputType.number,
                             autoFocus: true,
                             onCompleted: (String value) {
                               setState(() {

@@ -1,5 +1,6 @@
 import 'package:bashir/src/UI/MainScreens/callUs.dart';
 import 'package:bashir/src/UI/Notifications/notificationDetails.dart';
+import 'package:bashir/src/network/cachHelper.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
@@ -87,6 +88,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    print("token : ${CacheHelper.getData(key: "token")}");
     fetchLinkData();
     if (widget.index != null) {
       _selectedIndex = widget.index;

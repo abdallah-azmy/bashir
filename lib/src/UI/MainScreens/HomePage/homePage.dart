@@ -137,11 +137,6 @@ class _HomePageState extends State<HomePage> {
                         MediaQuery.of(context).size.height * .3,
                         text: state.error,
                       )
-                      //     : unpinnedNews.length == 0 ?
-                      // AppError(
-                      //   height:
-                      //   MediaQuery.of(context).size.height * .3,
-                      // )
                       : ListView(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -164,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                 unpinnedNews[index]
                                     .createdAt,
                                 numComment: unpinnedNews[index]
-                                    .comments.length,
+                                    .comments,
                                 seen: unpinnedNews[index]
                                     .seen,
                                 newsId: unpinnedNews[index]

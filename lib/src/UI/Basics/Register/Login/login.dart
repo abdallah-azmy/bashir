@@ -3,6 +3,7 @@ import 'package:bashir/src/Helpers/route.dart';
 import 'package:bashir/src/UI/Basics/Register/Login/loginCubit/login_cubit.dart';
 import 'package:bashir/src/UI/Basics/Register/forgetPassword/forgetPassword.dart';
 import 'package:bashir/src/UI/Basics/Register/SignUp/signUp.dart';
+import 'package:bashir/src/UI/Basics/Terms/termsScreen.dart';
 import 'package:bashir/src/UI/MainWidgets/customBtn.dart';
 import 'package:bashir/src/UI/MainWidgets/customLinearLoading.dart';
 import 'package:bashir/src/UI/MainWidgets/toast.dart';
@@ -10,7 +11,6 @@ import 'package:bashir/src/UI/mainPage.dart';
 import 'package:bashir/src/network/cachHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   String email;
   String password;
 
+  bool terms = false;
 
   _changeShow() {
     setState(() {
@@ -30,30 +31,26 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Form(
         key: _form,
-        child: BlocConsumer<LoginCubit,LoginState>(
+        child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccessState) {
               if (state.loginModel.code == 200) {
                 CacheHelper.saveData(
-                    key: 'token',
-                    value: state.loginModel.data[0].apiToken)
+                        key: 'token', value: state.loginModel.data[0].apiToken)
                     .then((value) {
                   CacheHelper.saveData(
                       key: 'userData',
                       value: json.encode(state.loginModel.toJson()));
-                  print("User Data : " +
-                      CacheHelper.getData(key: "userData"));
+                  print("User Data : " + CacheHelper.getData(key: "userData"));
                 });
                 showToast(
-                    msg: "تم تسجيل الدخول بنجاح",
-                    state: ToastStates.SUCCESS);
+                    msg: "تم تسجيل الدخول بنجاح", state: ToastStates.SUCCESS);
                 Future.delayed(Duration(milliseconds: 300), () {
                   pushAndRemoveUntil(context, MainPage());
                 });
@@ -61,11 +58,10 @@ class _LoginPageState extends State<LoginPage> {
                 showToast(
                     msg: state.loginModel.error[0].value,
                     state: ToastStates.ERROR);
-
               }
             }
           },
-          builder: (context , state) {
+          builder: (context, state) {
             var loginCubit = LoginCubit.get(context);
             return Container(
               width: MediaQuery.of(context).size.width,
@@ -75,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20, bottom: 20, left: 20),
                     child: Row(
                       children: <Widget>[
                         InkWell(
@@ -120,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                         onSaved: (value) {
-                          loginCubit.email = value ;
+                          loginCubit.email = value;
                           setState(() {
                             email = value;
                           });
@@ -155,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                         onSaved: (value) {
-                          loginCubit.password = value ;
+                          loginCubit.password = value;
                           setState(() {
                             password = value;
                           });
@@ -163,27 +160,50 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 10),
+                  CheckboxListTile(
+                    value: terms,
+                    onChanged: (v) {
+                      setState(() {
+                        terms = v;
+                      });
+                    },
+                    title: InkWell(
+                        onTap: () {
+                          push(context, TermsScreen());
+                        },
+                        child: Text("الشروط و الاحكام",textAlign: TextAlign.end,)),
+                  ),
+                  SizedBox(height: 20),
                   (state is LoginLoadingState)
-                      ? CustomLinearLoading(horizontalPadding: 0,)
-                      :CustomBtn(
-                      text: 'تسجيل الدخول',
-                      onTap: () {
-                        _saveForm();
-                      },
-                      color: Theme.of(context).primaryColor),
+                      ? CustomLinearLoading(
+                          horizontalPadding: 0,
+                        )
+                      : CustomBtn(
+                          text: 'تسجيل الدخول',
+                          onTap: () {
+                         if(terms == false ){
+                           showToast(msg: "يجب الموافقة علي الشروط و الاحكام", state: ToastStates.ERROR);
+                         }else{
+                           _saveForm();
+                         }
+                          },
+                          color: Theme.of(context).primaryColor),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     textDirection: TextDirection.rtl,
                     children: <Widget>[
                       InkWell(
-                        onTap: () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => SignUpPage())),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage())),
                         child: Text(
                           'إشتراك جديد؟',
                           style: TextStyle(
-                              fontSize: 15, color: Theme.of(context).primaryColor),
+                              fontSize: 15,
+                              color: Theme.of(context).primaryColor),
                           textAlign: TextAlign.center,
                         ),
                       ),

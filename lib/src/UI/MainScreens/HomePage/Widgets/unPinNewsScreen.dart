@@ -3,14 +3,10 @@ import 'package:bashir/src/General%20Cubit/UnPinnedNewsCubit/unPinned_News_cubit
 import 'package:bashir/src/UI/MainWidgets/app_error.dart';
 import 'package:bashir/src/UI/MainWidgets/app_loader.dart';
 import 'package:bashir/src/UI/MainWidgets/customCard.dart';
-import 'package:bashir/src/UI/MainWidgets/customWidgetBody.dart';
-import 'package:bashir/src/UI/MainWidgets/list_animator.dart';
 import 'package:bashir/src/UI/SupScreens/News/newsDetails.dart';
 import 'package:bashir/src/models/unPinNewsModel.dart';
-import 'package:bashir/src/provider/unPinNews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UnPinNewsScreen extends StatefulWidget {
@@ -107,7 +103,7 @@ class _UnPinNewsScreenState extends State<UnPinNewsScreen> {
                                     title: unpinnedNews[index].title,
                                     createdAt: unpinnedNews[index].createdAt,
                                     numComment:
-                                        unpinnedNews[index].comments.length,
+                                        unpinnedNews[index].comments,
                                     seen: unpinnedNews[index].seen,
                                     newsId: unpinnedNews[index].id,
                                     onTap: () {
@@ -157,7 +153,7 @@ class _UnPinNewsScreenState extends State<UnPinNewsScreen> {
                             title: unpinnedNews[index].title,
                             createdAt: unpinnedNews[index].createdAt,
                             numComment:
-                            unpinnedNews[index].comments.length,
+                            unpinnedNews[index].comments,
                             seen: unpinnedNews[index].seen,
                             newsId: unpinnedNews[index].id,
                             onTap: () {

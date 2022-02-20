@@ -49,7 +49,7 @@ class UnPinnedNews {
   List<Video> videos;
   List<VideoLink> videoLinks;
   List<Phone> phones;
-  List<Comment> comments;
+  int comments;
   int seen;
   DateTime createdAt;
 
@@ -78,8 +78,7 @@ class UnPinnedNews {
         videos: List<Video>.from(json["videos"].map((x) => Video.fromJson(x))),
     videoLinks: json["video_links"] == null ? null : List<VideoLink>.from(json["video_links"].map((x) => VideoLink.fromJson(x))),
     phones: json["phones"] == null ? null : List<Phone>.from(json["phones"].map((x) => Phone.fromJson(x))),
-        comments: List<Comment>.from(
-            json["comments"].map((x) => Comment.fromJson(x))),
+    comments: json["comments"] == null ? null : json["comments"],
         seen: json["seen"],
         createdAt: DateTime.parse(json["created_at"]),
       );
@@ -94,7 +93,7 @@ class UnPinnedNews {
         "videos": List<dynamic>.from(videos.map((x) => x.toJson())),
     "video_links": videoLinks == null ? null : List<dynamic>.from(videoLinks.map((x) => x.toJson())),
     "phones": phones == null ? null : List<dynamic>.from(phones.map((x) => x.toJson())),
-        "comments": List<dynamic>.from(comments.map((x) => x.toJson())),
+    "comments": comments == null ? null : comments,
         "seen": seen,
         "created_at":
             "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",

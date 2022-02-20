@@ -39,7 +39,7 @@ class Datum {
     String title;
     String content;
     List<Photo> photos;
-    List<dynamic> comments;
+    int comments;
     int seen;
     DateTime createdAt;
 
@@ -62,7 +62,7 @@ class Datum {
         title: json["title"] == null ? null : json["title"],
         content: json["content"] == null ? null : json["content"],
         photos: json["photos"] == null ? null : List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
-        comments: json["comments"] == null ? null : List<dynamic>.from(json["comments"].map((x) => x)),
+        comments: json["comments"] == null ? null : json["comments"],
         seen: json["seen"] == null ? null : json["seen"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     );
@@ -74,7 +74,7 @@ class Datum {
         "title": title == null ? null : title,
         "content": content == null ? null : content,
         "photos": photos == null ? null : List<dynamic>.from(photos.map((x) => x.toJson())),
-        "comments": comments == null ? null : List<dynamic>.from(comments.map((x) => x)),
+        "comments": comments == null ? null : comments,
         "seen": seen == null ? null : seen,
         "created_at": createdAt == null ? null : "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
     };

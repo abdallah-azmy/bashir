@@ -1,5 +1,7 @@
+import 'package:bashir/src/Helpers/route.dart';
 import 'package:bashir/src/UI/Basics/Register/Login/login.dart';
 import 'package:bashir/src/UI/Basics/Terms/aboutVillage.dart';
+import 'package:bashir/src/UI/Basics/Terms/termsScreen.dart';
 import 'package:bashir/src/UI/Basics/Terms/villageWelcome.dart';
 import 'package:bashir/src/UI/MainScreens/profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +127,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                     ),
                   ),
+
+
+
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 20),
+                      child: InkWell(
+                        onTap: _launchURL,
+                        child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: InkWell(
+                                onTap: () {
+                                  push(context, TermsScreen());
+                                },
+                                child: Text("الشروط و الاحكام",style: TextStyle(color: Colors.blue),)),),
+                      ),
+                    ),
+                  ),
+
+
+
+
+
                 ],
               ),
             ),

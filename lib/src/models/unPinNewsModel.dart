@@ -452,14 +452,16 @@ class UnPinNewsModel {
   int mainCode;
   int code;
   Data data;
-  dynamic error;
+  List<Error> error;
 
   factory UnPinNewsModel.fromJson(Map<String, dynamic> json) => UnPinNewsModel(
         mainCode: json["mainCode"],
         code: json["code"],
         // data: Data.fromJson(json["data"]),
         data: Data.fromJson(json["data"]),
-        error: json["error"],
+    error: json["error"] == null
+        ? null
+        : List<Error>.from(json["error"].map((x) => Error.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -555,7 +557,7 @@ class News {
   List<dynamic> videos;
   List<dynamic> videoLinks;
   List<dynamic> phones;
-  List<Comment> comments;
+  int comments;
   int seen;
   DateTime createdAt;
 
@@ -569,8 +571,7 @@ class News {
         videos: List<dynamic>.from(json["videos"].map((x) => x)),
         videoLinks: List<dynamic>.from(json["video_links"].map((x) => x)),
         phones: List<dynamic>.from(json["phones"].map((x) => x)),
-        comments: List<Comment>.from(
-            json["comments"].map((x) => Comment.fromJson(x))),
+    comments: json["comments"] == null ? null : json["comments"],
         seen: json["seen"],
         createdAt: DateTime.parse(json["created_at"]),
       );
@@ -585,7 +586,7 @@ class News {
         "videos": List<dynamic>.from(videos.map((x) => x)),
         "video_links": List<dynamic>.from(videoLinks.map((x) => x)),
         "phones": List<dynamic>.from(phones.map((x) => x)),
-        "comments": List<dynamic>.from(comments.map((x) => x.toJson())),
+    "comments": comments == null ? null : comments,
         "seen": seen,
         "created_at":
             "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",

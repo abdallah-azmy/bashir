@@ -1,6 +1,8 @@
 import 'package:bashir/main.dart';
+import 'package:bashir/src/General%20Cubit/LogOutCubit/logOut_cubit.dart';
 import 'package:bashir/src/Helpers/route.dart';
 import 'package:bashir/src/UI/Intro/splash.dart';
+import 'package:bashir/src/UI/MainWidgets/toast.dart';
 import 'package:bashir/src/network/cachHelper.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
@@ -15,8 +17,7 @@ class NewNetworkUtil with ChangeNotifier {
   factory NewNetworkUtil() => _instance;
   Dio dio = Dio();
 
-  Future<Response> get(String url, { var body,
-      Map headers}) async {
+  Future<Response> get(String url, {var body, Map headers}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult == ConnectivityResult.mobile ||
@@ -24,14 +25,15 @@ class NewNetworkUtil with ChangeNotifier {
       Map<String, String> headerss = headers != null
           ? headers
           : {
-        "Authorization": "Bearer ${CacheHelper.getData(key: 'token')}",
-        "Content-Language": "ar"
-      };
+              "Authorization": "Bearer ${CacheHelper.getData(key: 'token')}",
+              "Content-Language": "ar"
+            };
       var response;
       try {
         dio.options.baseUrl = "http://bashir.tqnee.com/api/v1/";
 //        dio.options.baseUrl = "https://easy-card.site/api/v1/";
-        response = await dio.get(url, options: Options(headers: headerss), queryParameters: body);
+        response = await dio.get(url,
+            options: Options(headers: headerss), queryParameters: body);
       } on DioError catch (e) {
         if (e.response != null) {
           response = e.response;
@@ -41,7 +43,6 @@ class NewNetworkUtil with ChangeNotifier {
       }
       return handleResponse(response);
     } else {
-
       // ModalRoute.of(context)?.isCurrent != true
       //     ? Navigator.pop(context)
       //     : print("there is no opened dialogs");
@@ -53,30 +54,28 @@ class NewNetworkUtil with ChangeNotifier {
           "code": 102,
           "data": null,
           "error": [
-            {
-              "key": "internet",
-              "value": "يرجي التحقق من الاتصال بالانترنت"
-            }
+            {"key": "internet", "value": "يرجي التحقق من الاتصال بالانترنت"}
           ]
         },
       );
     }
   }
 
-  Future<Response> post(String url,
-      {Map headers,
-        FormData body,
-        encoding,
-      }) async {
+  Future<Response> post(
+    String url, {
+    Map headers,
+    FormData body,
+    encoding,
+  }) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       Map<String, String> headerss = headers != null
           ? headers
           : {
-        "Authorization": "Bearer ${CacheHelper.getData(key: 'token')}",
-        "Content-Language": "ar"
-      };
+              "Authorization": "Bearer ${CacheHelper.getData(key: 'token')}",
+              "Content-Language": "ar"
+            };
       var response;
 //      dio.options.baseUrl = "https://easy-card.site/api/v1/";
       dio.options.baseUrl = "http://bashir.tqnee.com/api/v1/";
@@ -95,7 +94,8 @@ class NewNetworkUtil with ChangeNotifier {
       } on DioError catch (e) {
         if (e.response != null) {
           response = e.response;
-          print("response of DioError catch for post function : " + "${e.response}");
+          print("response of DioError catch for post function : " +
+              "${e.response}");
         } else {}
       }
       return handleResponse(response);
@@ -111,18 +111,14 @@ class NewNetworkUtil with ChangeNotifier {
           "code": 102,
           "data": null,
           "error": [
-            {
-              "key": "no internet",
-              "value": "يرجي التحقق من الاتصال بالانترنت"
-            }
+            {"key": "no internet", "value": "يرجي التحقق من الاتصال بالانترنت"}
           ]
         },
       );
     }
   }
 
-  Future<Response> handleResponse(
-      Response response) async {
+  Future<Response> handleResponse(Response response) async {
     print("heree <<<<<<<<<<<<,,");
     progress = 0;
     if (response == null || response.data.runtimeType == String) {
@@ -137,7 +133,10 @@ class NewNetworkUtil with ChangeNotifier {
           "code": 102,
           "data": null,
           "error": [
-            {"key": "response here == null", "value": "هناك خطأ .. يرجي اعادة المحاولة"}
+            {
+              "key": "response here == null",
+              "value": "هناك خطأ .. يرجي اعادة المحاولة"
+            }
           ]
         },
 //          requestOptions: null
@@ -149,17 +148,19 @@ class NewNetworkUtil with ChangeNotifier {
       if (statusCode >= 200 && statusCode < 300) {
         return response;
       } else if (statusCode == 401) {
-
 //        SharedPreferences preferences = await SharedPreferences.getInstance();
 //        preferences.clear();
-        CacheHelper.removeData(key: "token");
-        CacheHelper.removeData(key: "userData");
-//        token = null;
-        notifyListeners();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          pushAndRemoveUntil(navigator.currentContext, SplashScreen());
-        });
-        print("here");
+//         CacheHelper.removeData(key: "token");
+//         CacheHelper.removeData(key: "userData");
+// //        token = null;
+//         notifyListeners();
+//         WidgetsBinding.instance.addPostFrameCallback((_) {
+//           pushAndRemoveUntil(navigator.currentContext, SplashScreen());
+//         });
+//         print("here");
+
+        showToast(msg: "يرجي الانتظار", state: ToastStates.WARNING);
+        await LogOutCubit.get(navigator.currentContext).logOut();
 
         return Response(
           statusCode: 401,

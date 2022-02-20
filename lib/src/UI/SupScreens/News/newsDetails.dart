@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:bashir/src/General%20Cubit/AddToFavCubit/add_toFav_cubit.dart';
+import 'package:bashir/src/General%20Cubit/ReportNewsCubit/reportNews_cubit.dart';
 import 'package:bashir/src/General%20Cubit/SeenCubit/seen_cubit.dart';
+import 'package:bashir/src/Helpers/myColors.dart';
 import 'package:bashir/src/UI/Basics/Register/Login/login.dart';
+import 'package:bashir/src/UI/MainWidgets/customBtn.dart';
 import 'package:bashir/src/UI/MainWidgets/customCircularLoading.dart';
+import 'package:bashir/src/UI/MainWidgets/customTextField.dart';
 import 'package:bashir/src/UI/MainWidgets/list_animator.dart';
 import 'package:bashir/src/UI/SupScreens/Videos/Widgets/videosCard.dart';
 import 'package:bashir/src/network/cachHelper.dart';
@@ -27,7 +31,7 @@ class NewsDetails extends StatefulWidget {
   final List videos;
   final List videosLinks;
   final List phones;
-  final List comments;
+  final int comments;
   final String content;
   final DateTime createAt;
   final int newsId;
@@ -195,7 +199,6 @@ class _NewsDetailsState extends State<NewsDetails> {
                 context,
                 MaterialPageRoute(
                     builder: (_) => AddComment(
-                          comments: widget.comments,
                           newsId: widget.newsId,
                         )));
           }
@@ -298,7 +301,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text("${widget.comments.length}"),
+                        Text("${widget.comments}"),
                         SizedBox(width: 5),
                         Icon(
                           Icons.comment,
@@ -316,6 +319,22 @@ class _NewsDetailsState extends State<NewsDetails> {
                           color: Colors.grey,
                         )
                       ],
+                    ),
+                    SizedBox(width: 20),
+                    InkWell(
+                      onTap: () {
+                        makeReport(context: context, id: widget.newsId);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text("شكوي"),
+                          SizedBox(width: 5),
+                          Icon(
+                            Icons.report,
+                            color: Colors.blue,
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -470,7 +489,8 @@ class _NewsDetailsState extends State<NewsDetails> {
         child: Carousel(
           boxFit: BoxFit.cover,
           images: List.generate(widget.images.length, (int index) {
-            return NetworkImage(widget.images[index].photo.replaceAll("http", "https"));
+            return NetworkImage(
+                widget.images[index].photo.replaceAll("http", "https"));
           }),
           autoplay: false,
           dotSize: 4,
@@ -538,5 +558,57 @@ class _NewsDetailsState extends State<NewsDetails> {
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (c) => LoginPage()));
     }
+  }
+
+  makeReport({
+    int id,
+    BuildContext context,
+  }) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          String report;
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              contentPadding: EdgeInsets.all(0),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              backgroundColor: Colors.white,
+              content: Container(
+                height: 180,
+                width: MediaQuery.of(context).size.width * .7,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomTextField(
+                      hint: "اكتب شكواك هنا",
+                      onChang: (v) {
+                        setState(() {
+                          report = v;
+                        });
+                        print("$report");
+                      },
+                      high: 70,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    CustomBtn(
+                        text: "ارسال",
+                        onTap: () {
+                          Navigator.pop(context);
+                          ReportNewsCubit.get(context).reportNews(id, report);
+                        },
+                        color: MyColors.green)
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

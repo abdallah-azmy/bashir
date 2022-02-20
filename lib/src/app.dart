@@ -2,6 +2,7 @@ import 'package:bashir/main.dart';
 import 'package:bashir/src/General%20Cubit/AboutVillageCubit/about_village_cubit.dart';
 import 'package:bashir/src/General%20Cubit/AddToFavCubit/add_toFav_cubit.dart';
 import 'package:bashir/src/General%20Cubit/AdminPhoneCubit/admin_phone_cubit.dart';
+import 'package:bashir/src/General%20Cubit/BlocUserCubit/blocUser_cubit.dart';
 import 'package:bashir/src/General%20Cubit/ChangePasswordCubit/change_password_cubit.dart';
 import 'package:bashir/src/General%20Cubit/CommentsCubit/comments_cubit.dart';
 import 'package:bashir/src/General%20Cubit/ContactUsCubit/contactUs_cubit.dart';
@@ -11,8 +12,10 @@ import 'package:bashir/src/General%20Cubit/LogOutCubit/logOut_cubit.dart';
 import 'package:bashir/src/General%20Cubit/MomentByMomentGalleryCubit/moment_by_moment_cubit.dart';
 import 'package:bashir/src/General%20Cubit/NotificationsCubit/notifications_cubit.dart';
 import 'package:bashir/src/General%20Cubit/PhotoGalleryCubit/photo_gallery_cubit.dart';
+import 'package:bashir/src/General%20Cubit/ReportNewsCubit/reportNews_cubit.dart';
 import 'package:bashir/src/General%20Cubit/SeenCubit/seen_cubit.dart';
 import 'package:bashir/src/General%20Cubit/SliderCubit/slider_cubit.dart';
+import 'package:bashir/src/General%20Cubit/TermsCubit/terms_cubit.dart';
 import 'package:bashir/src/General%20Cubit/UnPinnedNewsCubit/unPinned_News_cubit.dart';
 import 'package:bashir/src/General%20Cubit/VideoGalleryCubit/video_gallery_cubit.dart';
 import 'package:bashir/src/General%20Cubit/VillageWelcomeCubit/village_welcome_cubit.dart';
@@ -73,6 +76,9 @@ class _AppState extends State<App> {
         BlocProvider(create: (_)=>VideoGalleryCubit()),
         BlocProvider(create: (_)=>MomentByMomentCubit()),
         BlocProvider(create: (_)=>CommentsCubit()),
+        BlocProvider(create: (_)=>ReportNewsCubit()),
+        BlocProvider(create: (_)=>BlocUserCubit()),
+        BlocProvider(create: (_)=>TermsCubit()),
 
 
 

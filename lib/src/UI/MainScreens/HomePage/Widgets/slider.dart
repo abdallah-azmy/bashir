@@ -168,7 +168,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                                                         Row(
                                                           children: <Widget>[
                                                             Text(
-                                                              "${cubit.model.data[index].comments.length}",
+                                                              "${cubit.model.data[index].comments}",
                                                               style: TextStyle(
                                                                   fontSize: 10),
                                                             ),

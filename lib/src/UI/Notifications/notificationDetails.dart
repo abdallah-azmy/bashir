@@ -159,7 +159,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                 context,
                 MaterialPageRoute(
                     builder: (_) => AddComment(
-                          comments: _model.data[0].comments,
+
                           newsId: _model.data[0].id,
                         )));
           }

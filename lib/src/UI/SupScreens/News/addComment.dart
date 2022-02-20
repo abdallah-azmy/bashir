@@ -1,4 +1,6 @@
+import 'package:bashir/src/General%20Cubit/BlocUserCubit/blocUser_cubit.dart';
 import 'package:bashir/src/General%20Cubit/CommentsCubit/comments_cubit.dart';
+import 'package:bashir/src/Helpers/myColors.dart';
 import 'package:bashir/src/UI/Basics/Register/Login/login.dart';
 import 'package:bashir/src/UI/MainWidgets/app_error.dart';
 import 'package:bashir/src/UI/MainWidgets/commentCard.dart';
@@ -12,10 +14,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart' as intl;
 
 class AddComment extends StatefulWidget {
-  final List comments;
   final int newsId;
 
-  const AddComment({Key key, this.comments, this.newsId}) : super(key: key);
+  const AddComment({Key key,  this.newsId}) : super(key: key);
 
   @override
   _AddCommentState createState() => _AddCommentState();
@@ -77,27 +78,35 @@ class _AddCommentState extends State<AddComment> {
                   color: Theme.of(context).primaryColor,
                 ),
               )
-                  : (state is CommentsErrorState)
-                  ? AppError(
-                height: MediaQuery.of(context).size.height * .7,
-                text: state.error,
-              )
                   :   Container(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Flexible(
+                    (state is CommentsErrorState)
+                        ? AppError(
+                      height: MediaQuery.of(context).size.height * .7,
+                      text: state.error,
+                    )
+                        :   Flexible(
                       child: ListAnimator(
                         data: cubit.comments,
                         child: (index) {
-                          return CommentCard(
-                            index: index,
-                            comment: cubit.comments[index].comment,
-                            name: cubit.comments[index].user,
-                            data: intl.DateFormat.yMd()
-                                .format(cubit.comments[index].createdAt),
-                            img: cubit.comments[index].userPhoto,
+                          return InkWell(
+                            onTap: (){
+
+
+                              blocUserAlert(user: cubit.comments[index].user,id: cubit.comments[index].userId,newsId:cubit.comments[index].newsPaperId );
+
+                            },
+                            child: CommentCard(
+                              index: index,
+                              comment: cubit.comments[index].comment,
+                              name: cubit.comments[index].user,
+                              data: intl.DateFormat.yMd()
+                                  .format(cubit.comments[index].createdAt),
+                              img: cubit.comments[index].userPhoto,
+                            ),
                           );
                         },
 
@@ -198,107 +207,64 @@ class _AddCommentState extends State<AddComment> {
     );
   }
 
-  // _saveForm() {
-  //   Provider.of<AddCommentProvider>(context, listen: false)
-  //       .addComment(token, comment, widget.newsId)
-  //       .then((res) {
-  //     setState(() {
-  //       _load = false;
-  //       comment = null;
-  //     });
-  //     switch (res.code) {
-  //       case 200:
-  //         print("done");
-  //         setState(() {
-  //           _model = null;
-  //         });
-  //         _getShared();
-  //         break;
-  //       case 400:
-  //         print("data don't match");
-  //         showDialog(
-  //             context: context,
-  //             builder: (BuildContext context) {
-  //               return SimpleDialog(
-  //                 shape: RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(10)),
-  //                 backgroundColor: Colors.white,
-  //                 elevation: 3,
-  //                 contentPadding: EdgeInsets.all(5),
-  //                 children: <Widget>[
-  //                   Text(
-  //                     res.error[0].value,
-  //                     textAlign: TextAlign.center,
-  //                     style: TextStyle(color: Colors.black, fontSize: 20),
-  //                   ),
-  //                   Padding(
-  //                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-  //                     child: MaterialButton(
-  //                       onPressed: () {
-  //                         Navigator.pop(context);
-  //                       },
-  //                       elevation: 3,
-  //                       height: 45,
-  //                       color: Theme.of(context).primaryColor,
-  //                       shape: RoundedRectangleBorder(
-  //                           borderRadius: BorderRadius.circular(5)),
-  //                       child: Text(
-  //                         'موافق',
-  //                         style: TextStyle(fontSize: 17, color: Colors.white),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               );
-  //             });
-  //         break;
-  //       case 422:
-  //         print(res.error[0].value);
-  //         setState(() {
-  //           //  _load = false;
-  //         });
-  //         break;
-  //       default:
-  //         setState(() {
-  //           //_load = false;
-  //         });
-  //         print('error data');
-  //         showDialog(
-  //             context: context,
-  //             builder: (BuildContext context) {
-  //               return SimpleDialog(
-  //                 shape: RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(10)),
-  //                 backgroundColor: Colors.white,
-  //                 elevation: 3,
-  //                 contentPadding: EdgeInsets.all(5),
-  //                 children: <Widget>[
-  //                   Text(
-  //                     'من فضلك ادخل البيانات بشكل صحيح',
-  //                     textAlign: TextAlign.center,
-  //                     style: TextStyle(color: Colors.black, fontSize: 20),
-  //                   ),
-  //                   Padding(
-  //                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-  //                     child: MaterialButton(
-  //                       onPressed: () {
-  //                         Navigator.pop(context);
-  //                       },
-  //                       elevation: 3,
-  //                       height: 45,
-  //                       color: Theme.of(context).primaryColor,
-  //                       shape: RoundedRectangleBorder(
-  //                           borderRadius: BorderRadius.circular(5)),
-  //                       child: Text(
-  //                         'موافق',
-  //                         style: TextStyle(fontSize: 17, color: Colors.white),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               );
-  //             });
-  //     }
-  //   });
-  // }
+
+  refreshFunc(){
+       CommentsCubit.get(context).getComments(id: widget.newsId);
+  }
+
+  blocUserAlert({String user, int id, int newsId}) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            backgroundColor: Colors.white,
+            content: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                    color: MyColors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(
+                        "حظر المستخدم $user",
+                        style: MyColors.styleBold1,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+
+                          Flexible(
+                            child: CustomBtn(
+                              onTap: () {
+                                Navigator.pop(context);
+                                BlocUserCubit.get(context).blocUser(id,newsId,refreshFunc);
+                              },
+                              text: "حظر",
+//                              width: 85.0,
+                              color: Colors.red,
+
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
 }

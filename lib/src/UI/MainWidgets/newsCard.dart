@@ -7,7 +7,7 @@ import 'package:intl/intl.dart' as intl;
 class NewsCard extends StatefulWidget {
   final String title;
   final List<Photo> images;
-  final List<Comment> comments;
+  final int comments;
   final String content;
   final DateTime createAt;
   final int newsId;
@@ -82,7 +82,7 @@ class _NewsCardState extends State<NewsCard> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Text("${widget.comments.length}"),
+                          Text("${widget.comments}"),
                           SizedBox(width: 5),
                           Icon(
                             Icons.comment,

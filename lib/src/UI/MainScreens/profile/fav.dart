@@ -142,7 +142,7 @@ class _FavScreenState extends State<FavScreen> {
                                         createdAt:
                                         cubit.model.data[index].createdAt,
                                         numComment: cubit.model.data[index]
-                                            .comments.length,
+                                            .comments,
                                         seen: cubit.model.data[index].seen,
                                         onTap: () {
                                           Navigator.push(
